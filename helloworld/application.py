@@ -99,10 +99,9 @@ def upload_image():
     img_url = 'https://jce-cloud-project.s3.amazonaws.com/'+ img_path
     
     
-    '''
     rekognition = boto3.client("rekognition", region_name = 'us-east-1')
     
-    key = img_url.replace("https://jce-cloud-project.s3.amazonaws.com/", "")
+    key = img_path
 
     response = rekognition.detect_faces(
     Image={
@@ -117,7 +116,6 @@ def upload_image():
     print(response['FaceDetails'][0]['Confidence'])
     confidence = response['FaceDetails'][0]['Confidence'];
     
-    '''
     confidence = "test"
     return {"img_url": img_url, "confidence": confidence}
  
