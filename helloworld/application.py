@@ -98,7 +98,33 @@ def upload_image():
     s3.Bucket(bucket).upload_fileobj(img, img_path, ExtraArgs={'ACL': 'public-read', 'ContentType': 'image/jpeg'}) 
     img_url = 'https://jce-cloud-project.s3.amazonaws.com/'+ img_path
     
-    return {"img_url": img_url}
+    
+    
+    rekognition = boto3.client("rekognition", region_name = 'us-east-1')
+    
+    key = img_url.replace("https://jce-cloud-project.s3.amazonaws.com/", "")
+    '''
+    image = s3.Object(bucket, key) # Get an Image from S3
+    img_data = image.get()['Body'].read() # Read the image
+
+    '''
+    response = rekognition.detect_faces(
+    Image={
+        'S3Object': {
+            'Bucket': bucket,
+            'Name': key,
+        }
+    }
+    )
+    
+    
+    
+    
+    print(response['FaceDetails'][0]['Confidence'])
+    confidence = response['FaceDetails'][0]['Confidence'];
+    
+
+    return {"img_url": img_url, "confidence": confidence}
  
  
  # S3 - UPLOAD RESUME (PDF)
@@ -130,6 +156,5 @@ def add_add_application():
 # curl -i -X POST -H "Content-Type: application/json" -d '{"application_id": "1"}' http://localhost:8000/add_application
 
 
- 
 if __name__ == '__main__':
     flaskrun(application)
