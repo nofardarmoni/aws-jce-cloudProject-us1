@@ -102,6 +102,7 @@ def upload_image():
     rekognition = boto3.client("rekognition", region_name = 'us-east-1')
     
     key = img_path
+    '''
 
     response = rekognition.detect_faces(
     Image={
@@ -115,9 +116,9 @@ def upload_image():
     
     print(response['FaceDetails'][0]['Confidence'])
     confidence = response['FaceDetails'][0]['Confidence'];
-    
+    '''
     confidence = "test"
-    return {"img_url": img_url, "confidence": confidence}
+    return {"img_url": img_url, "confidence": key}
  
  
  # S3 - UPLOAD RESUME (PDF)
