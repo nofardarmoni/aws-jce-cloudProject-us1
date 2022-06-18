@@ -148,5 +148,27 @@ def add_add_application():
 # curl -i -X POST -H "Content-Type: application/json" -d '{"application_id": "1"}' http://localhost:8000/add_application
 
 
+
+
+# GET CNDIDATES JOBS APPLICATIONS
+
+
+@application.route('/get_applicatins', methods=['GET'])
+def get_applicatins():
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('job_applications')
+    response = table.scan()
+    job_applications = response['Items']
+
+    return Response(json.dumps(job_applications), mimetype='application/json', status=200)    
+    
+# TEST -
+# curl http://localhost:8000/get_jobs
+
+
+
+
+
+
 if __name__ == '__main__':
     flaskrun(application)
