@@ -100,6 +100,7 @@ def upload_image():
     
     return {"img_url": img_url}
  
+ 
  # S3 - UPLOAD RESUME (PDF)
 @application.route('/upload_resume', methods=['POST'])
 def upload_resume():
@@ -112,7 +113,23 @@ def upload_resume():
     
     return {"resume_url": resume_url}
  
- 
+
+ # DynamoDB - ADD APPLICATION 
+
+@application.route('/add_application', methods=['POST'])
+def add_add_application():
+    data = request.get_json()
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('job_applications')
+    application_id = (str(uuid.uuid4()))
+    data['application_id'] = application_id
+    table.put_item(Item=data)
+    
+    return Response(json.dumps({'Output': 'Hello World'}), mimetype='application/json', status=200)
+# TEST -
+# curl -i -X POST -H "Content-Type: application/json" -d '{"application_id": "1"}' http://localhost:8000/add_application
+
+
  
 if __name__ == '__main__':
     flaskrun(application)
