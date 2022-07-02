@@ -166,7 +166,24 @@ def get_applicatins():
 # curl http://localhost:8000/get_jobs
 
 
+@application.route('/delete_applicatin', methods=['POST'])
+def delete_applicatin():
+    data = request.get_json()
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('job_applications')
+    application_id = data['application_id']
 
+    response = table.delete_item(
+        Key={
+            'application_id': application_id,
+        }
+    )
+
+    return Response(json.dumps({'Output': 'Hello World'}), mimetype='application/json', status=200)
+    # TEST -
+
+    
+    # curl -i -X POST -H "Content-Type: application/json" -d '{"application_id": "af63006f-5b04-47ef-9bfc-5d4c3560015d"}' http://localhost:8000/delete_applicatin
 
 
 
