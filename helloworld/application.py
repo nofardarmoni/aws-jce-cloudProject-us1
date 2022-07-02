@@ -115,8 +115,10 @@ def upload_image():
     
     print(response['FaceDetails'][0]['Confidence'])
     confidence = response['FaceDetails'][0]['Confidence'];
+    sharpness = response['FaceDetails'][0]['Quality']['Sharpness'];
 
-    return {"img_url": img_url, "confidence": confidence}
+
+    return {"img_url": img_url, "confidence": confidence, "sharpness": sharpness}
  
  
  # S3 - UPLOAD RESUME (PDF)
